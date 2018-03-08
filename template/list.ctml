@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Top List</title>
+    <link rel="stylesheet" type="text/css" href="../static/toplists.css" @href="/static/toplists/toplists.css">
+  </head>
+  <body>
+    <h1>Top List</h1>
+    <c:when test="edit">
+      <noscript>
+        Sorry, JavaScript is required for this to work properly.
+      </noscript>
+    </c:when>
+    <main id="list" lquery="(add-class (when editable :editable))">
+      <ol class="items" iterate="items">
+        <li data-id="1" lquery="(text text) (data :id id)">Nier</li>
+        <li data-id="2">Ghost Trick</li>
+      </ol>
+      <article class="images" iterate="items">
+        <img data-id="1" src="http://shinmera.com/top%20list/nier%20automata.jpg"
+             lquery="(attr :src image :title text :alt text) (data :id id)"/>
+        <img data-id="2" src="http://shinmera.com/top%20list/ghost%20trick.jpg" />
+      </article>
+    </main>
+    <script type="text/javascript" src="../static/toplists.js" @src="/static/toplists/toplists.js"></script>
+  </body>
+</html>
