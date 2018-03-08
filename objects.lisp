@@ -16,19 +16,19 @@
 (define-trigger db:connected ()
   (db:create 'lists '((author (:varchar 32))
                       (title (:varchar 32)))
-             :index '(author))
+             :indices '(author))
   (db:create 'items '((list :id)
                       (id :integer)
                       (text (:varchar 32))
                       (image (:varchar 2048)))
-             :index '(author list))
+             :indices '(author list))
   (db:create 'orders '((author (:varchar 32))
                        (order :text))
-             :index '(author)))
+             :indices '(author)))
 
 (define-trigger user:ready ()
   (defaulted-config (list
-                     (perm toplists new)
+                     (perm toplists create)
                      (perm toplists view)
                      (perm toplists edit own)
                      (perm toplists delete own))
@@ -129,15 +129,15 @@
     (trigger 'order-deleted order)
     order))
 
-(defun permitted-p (action &optional ???? (user (or (auth:current) (user:get "anonymous"))))
+(defun permitted-p (action &optional list (user (or (auth:current) (user:get "anonymous"))))
   (if (listp action)
-      (loop for a in action thereis (permitted-p a ???? user))
-      (or (and ????
-               (equal (dm:field ???? "author") (user:username user))
+      (loop for a in action thereis (permitted-p a list user))
+      (or (and list
+               (equal (dm:field list "author") (user:username user))
                (user:check user `(toplists ,action own)))
           (user:check user `(toplists ,action)))))
 
-(defun check-permission (action &optional ???? (user (or (auth:current) (user:get "anonymous"))))
-  (unless (permitted-p action event user)
-    (error 'request-denied :message (format NIL "You do not have the permission to ~a events."
+(defun check-permission (action &optional list (user (or (auth:current) (user:get "anonymous"))))
+  (unless (permitted-p action list user)
+    (error 'request-denied :message (format NIL "You do not have the permission to ~a lists."
                                             action))))

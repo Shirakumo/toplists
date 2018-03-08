@@ -2,20 +2,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title><c:splice lquery="(text title)"/> - Top List</title>
+    <title>Top Lists</title>
     <link rel="stylesheet" type="text/css" href="../static/toplists.css" @href="/static/toplists/toplists.css">
   </head>
   <body>
     <header>
-      <h1 lquery="(text title)">Top List</h1>
+      <h1>Top Lists</h1>
     </header>
-    <c:when test="editable">
-      <noscript>
-        Sorry, JavaScript is required for this to work properly.
-      </noscript>
-    </c:when>
     <main>
-      <c:import file='(template-file "list.ctml" :toplists)' />
+      <ol iterate="lists">
+        <li>
+          <a href="#" @href="/{0} _id" lquery="(text title)">LIST</a>
+          <a href="#" rel="author" @href="<profile page {0}> author">AUTHOR</a>
+        </li>
+      </ol>
     </main>
     <script type="text/javascript" src="../static/toplists.js" @src="/static/toplists/toplists.js"></script>
   </body>

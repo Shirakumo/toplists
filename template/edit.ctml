@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title><c:splice lquery='(text (or (clip event :title) "New List"))'/> - Top List</title>
+    <link rel="stylesheet" type="text/css" href="../static/toplists.css" @href="/static/toplists/toplists.css">
+  </head>
+  <body>
+    <form>
+      <header>
+        <input type="text" name="title" placeholder="Title" maxlength="32" required
+               lquery="(val (clip event :title))" />
+      </header>
+      <main iterate='(or items (list :text "" :image ""))'>
+        <div class="item">
+          <input type="text" name="text[]" placeholder="Text" maxlength="32"
+                 lquery="(val text)" />
+          <input type="url" name="image[]" placeholder="Image URL" maxlength="2048"
+                 lquery="(val image)" />
+        </div>
+      </main>
+      <div id="buttons">
+        <c:if test="(dm:hull-p *)">
+          <c:then>
+            <input type="submit" @formaction="/api/toplists/create" value="Post" />
+          </c:then>
+          <c:else>
+            <input type="hidden" name="id" lquery="(val _id)" />
+            <c:when test="(toplists::permitted-p :edit *)">
+              <input type="submit" @formaction="/api/toplists/edit" value="Save" />
+            </c:when>
+            <c:when test="(toplists::permitted-p :delete *)">
+              <input type="submit" @formaction="/api/toplists/delete" value="Delete" />
+            </c:when>
+          </c:else>
+        </c:if>
+      </div>
+    </form>
+    <script type="text/javascript" src="../static/toplists.js" @src="/static/toplists/toplists.js"></script>
+  </body>
+</html>
