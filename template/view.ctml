@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><c:splice lquery="(text title)"/> - Top List</title>
+    <link rel="stylesheet" type="text/css" href="../static/toplists.css" @href="/static/toplists/toplists.css">
+  </head>
+  <body>
+    <h1 lquery="(text title)">Top List</h1>
+    <c:when test="editable">
+      <noscript>
+        Sorry, JavaScript is required for this to work properly.
+      </noscript>
+    </c:when>
+    <main>
+      <c:import file='(template-file "list.ctml" :toplists)' />
+    </main>
+    <script type="text/javascript" src="../static/toplists.js" @src="/static/toplists/toplists.js"></script>
+  </body>
+</html>
