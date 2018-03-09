@@ -1,11 +1,9 @@
-<article class="list" lquery='(add-class (when editable "editable")) (data :id id)'>
+<article class="list" lquery='(add-class (when editable "editable")) (data :id id :order order)'>
   <ol class="items" iterate="items">
-    <li data-id="1" lquery="(text text) (data :id id)">Nier</li>
-    <li data-id="2">Ghost Trick</li>
+    <li data-id="1" lquery="(text text) (data :id id)">ITEM</li>
   </ol>
   <div class="images" iterate="items">
-    <img data-id="1" src="http://shinmera.com/top%20list/nier%20automata.jpg"
+    <img data-id="1" src="#"
          lquery="(attr :src image :title text :alt text) (data :id id)"/>
-    <img data-id="2" src="http://shinmera.com/top%20list/ghost%20trick.jpg" />
   </div>
 </article>

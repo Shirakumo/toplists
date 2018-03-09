@@ -5,21 +5,15 @@
       <meta charset="utf-8" />
       <title><c:splice lquery="(text title)"/> - Top List</title>
       <link rel="stylesheet" type="text/css" href="../static/toplists.css" @href="/static/toplists/toplists.css">
+      <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
     </head>
     <body>
       <header>
-        <h1 lquery="(text title)">Top List</h1>
-        <nav>
-          <a href="#" @href="toplists/new">New List</a>
-          <a href="#" @href="toplists/{0}/order _id">Order this List</a>
-          <a href="#" @href="toplists/{0}/edit _id">Edit this List</a>
-        </nav>
+        <h1><a href="#" @href="toplists/{0} _id" lquery="(text title)">Top List</a></h1>
+        <a rel="author" href="#" @href="<profile page {0}> author"
+           lquery="(text author)">Author</a>
+        <c:import file='(template-file "nav.ctml" :toplists)' />
       </header>
-      <c:when test="editable">
-        <noscript>
-          Sorry, JavaScript is required for this to work properly.
-        </noscript>
-      </c:when>
       <main>
         <c:import file='(template-file "list.ctml" :toplists)' />
       </main>

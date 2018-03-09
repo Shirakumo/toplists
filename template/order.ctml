@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <c:using value="list">
+    <head>
+      <meta charset="utf-8" />
+      <title><c:splice lquery="(text title)"/> - Top List</title>
+      <link rel="stylesheet" type="text/css" href="../static/toplists.css" @href="/static/toplists/toplists.css">
+      <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+    </head>
+    <body>
+      <header>
+        <h1><a href="#" @href="toplists/{0} _id" lquery="(text title)">Top List</a></h1>
+        <a rel="author" href="#" @href="<profile page {0}> (clip (** :order) :author)"
+           lquery="(text (clip (** :order) :author))">Author</a>
+        <c:import file='(template-file "nav.ctml" :toplists)' />
+      </header>
+      <noscript>
+        Sorry, JavaScript is required for this to work properly.
+      </noscript>
+      <main>
+        <c:import file='(template-file "list.ctml" :toplists)' />
+        <div class="buttons">
+          <c:if test="(** order)">
+            <c:then>
+              <input type="submit" @formaction="/api/toplists/order/create" value="Create" />
+            </c:then>
+            <c:else>
+              <input type="hidden" name="id" lquery="(val (clip (** :order) :_id))" />
+              <c:when test="(toplists::permitted-p :edit order)">
+                <input type="submit" @formaction="/api/toplists/order/edit" value="Save" />
+              </c:when>
+              <c:when test="(toplists::permitted-p :delete order)">
+                <input type="submit" @formaction="/api/toplists/order/delete" value="Delete" />
+              </c:when>
+            </c:else>
+          </c:if>
+        </div>
+      </main>
+      <script type="text/javascript" src="../static/toplists.js" @src="/static/toplists/toplists.js"></script>
+    </body>
+  </c:using>
+</html>

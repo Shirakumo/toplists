@@ -1,45 +1,51 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="utf-8" />
-    <title><c:splice lquery='(text (or (clip list :title) "New List"))'/> - Top List</title>
-    <link rel="stylesheet" type="text/css" href="../static/toplists.css" @href="/static/toplists/toplists.css">
-  </head>
-  <body>
-    <form class="editor">
-      <input type="hidden" name="browser" value="true" />
-      <header>
-        <input type="text" name="title" placeholder="List Title" maxlength="32" required
-               lquery="(val (clip list :title))" />
-      </header>
-      <noscript>
-        Sorry, JavaScript is required for this to work properly.
-      </noscript>
-      <main class="items" iterate='items'>
-        <div class="item">
-          <input type="text" name="text[]" placeholder="Item text" maxlength="32"
-                 lquery="(val text)" />
-          <input type="url" name="image[]" placeholder="Image URL" maxlength="2048"
-                 lquery="(val image)" />
-        </div>
-      </main>
-      <div class="buttons">
-        <c:if test="(dm:hull-p list)">
-          <c:then>
-            <input type="submit" @formaction="/api/toplists/list/create" value="Post" />
-          </c:then>
-          <c:else>
-            <input type="hidden" name="id" lquery="(val (clip list :_id))" />
-            <c:when test="(toplists::permitted-p :edit list)">
-              <input type="submit" @formaction="/api/toplists/list/edit" value="Save" />
-            </c:when>
-            <c:when test="(toplists::permitted-p :delete list)">
-              <input type="submit" @formaction="/api/toplists/list/delete" value="Delete" />
-            </c:when>
-          </c:else>
-        </c:if>
-      </div>
-    </form>
-    <script type="text/javascript" src="../static/toplists.js" @src="/static/toplists/toplists.js"></script>
-  </body>
+  <c:using value="list">
+    <head>
+      <meta charset="utf-8" />
+      <title><c:splice lquery='(text (or title "New List"))'/> - Top List</title>
+      <link rel="stylesheet" type="text/css" href="../static/toplists.css" @href="/static/toplists/toplists.css">
+      <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+    </head>
+    <body>
+      <form class="editor">
+        <input type="hidden" name="browser" value="true" />
+        <header>
+          <input type="text" name="title" placeholder="List Title" maxlength="32" required
+                 lquery="(val title)" />
+          <c:import file='(template-file "nav.ctml" :toplists)' />
+        </header>
+        <noscript>
+          Sorry, JavaScript is required for this to work properly.
+        </noscript>
+        <main>
+          <ul class="items" iterate="items">
+            <li class="item">
+              <input type="text" name="text[]" placeholder="Item text" maxlength="32"
+                     lquery="(val text)" />
+              <input type="url" name="image[]" placeholder="Image URL" maxlength="2048"
+                     lquery="(val image)" />
+            </li>
+          </ul>
+          <div class="buttons">
+            <c:if test="(dm:hull-p *)">
+              <c:then>
+                <input type="submit" @formaction="/api/toplists/list/create" value="Create" />
+              </c:then>
+              <c:else>
+                <input type="hidden" name="id" lquery="(val _id)" />
+                <c:when test="(toplists::permitted-p :edit *)">
+                  <input type="submit" @formaction="/api/toplists/list/edit" value="Save" />
+                </c:when>
+                <c:when test="(toplists::permitted-p :delete *)">
+                  <input type="submit" @formaction="/api/toplists/list/delete" value="Delete" />
+                </c:when>
+              </c:else>
+            </c:if>
+          </div>
+        </main>
+      </form>
+      <script type="text/javascript" src="../static/toplists.js" @src="/static/toplists/toplists.js"></script>
+    </body>
+  </c:using>
 </html>

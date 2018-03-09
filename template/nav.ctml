@@ -1,0 +1,16 @@
+<nav>
+  <c:when test="(toplists::permitted-p :view)">
+    <a href="#" @href="toplists/"><i class="fas fa-list"></i> All Lists</a>
+  </c:when>
+  <c:when test="(toplists::permitted-p :create)">
+    <a href="#" @href="toplists/new"><i class="fas fa-plus-circle"></i> New List</a>
+  </c:when>
+  <c:when test="(and * (typep * 'dm:data-model) (not (dm:hull-p *)))">
+    <c:when test="(toplists::permitted-p :create list)">
+      <a href="#" @href="toplists/{0}/order _id"><i class="fas fa-sort"></i> New Order</a>
+    </c:when>
+    <c:when test="(toplists::permitted-p :edit list)">
+      <a href="#" @href="toplists/{0}/edit _id"><i class="fas fa-edit"></i> Edit List</a>
+    </c:when>
+  </c:when>
+</nav>

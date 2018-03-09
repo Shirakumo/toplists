@@ -1,8 +1,8 @@
 (html
  :font-family sans-serif
+ :background (hex 000000)
  (body
-  :margin 0 auto 0 auto
-  :max-width 800px
+  :margin 0
   (h1 :text-align center)
   (noscript
    :display block
@@ -12,19 +12,67 @@
    :font-weight bold
    :text-align center
    :padding 10px)
-  (.editor
+  (header
+   :text-align center
+   :margin 3em 0 0 0
+   :color (hex FFFFFF)
+   :background (hex 151515)
+   :border-bottom 3px solid (hex 0088EE)
+   ((:or h1 input)
+    :font-size 2em
+    :margin .1em 0
+    :display inline-block)
+   (a
+    :text-decoration none
+    :color inherit
+    :display inline-block
+    :cursor pointer)
+   ([rel=author]
+    :font-size 1.5em
+    :color (hex AAAAAA))
+   ("[rel=author]:before"
+    :content " by ")
+   (nav
+    :display block
+    (a :padding 0.2em 0.5em)
+    ("a:hover" :background (hex 0088EE))))
+  (main
+   :margin 0 auto 0 auto
+   :max-width 800px
+   :min-height 500px
+   :padding 10px
+   :background (hex EEEEEE)
+   :display flex
+   :flex-direction column
+   :justify-content space-between
    (input
-    :border 1px solid gray
-    :padding 3px)
+    :border 1px solid (hex AAAAAA)
+    :padding 3px
+    :cursor pointer)
+   (input[type=submit]
+    :background (hex 0088EE)
+    :color (hex FFFFFF)
+    :border none
+    :font-size 1.0em
+    :font-weight bold
+    :margin 0 0.2em
+    :padding 0.2em 0.5em)
+   ("input[type=submit]:hover")
+   (.buttons
+     :display flex))
+  (.editor
+   (form :width 100%)
    (header
     (input
      :width 100%
      :box-sizing border-box
-     :font-size 2em
-     :margin .67em 0
-     :text-align center))
+     :padding 0
+     :border 1px solid (hex 333333)
+     :text-align center
+     :background inherit
+     :color inherit))
    (main
-    :margin 10px 0 10px 0
+    (ul :margin 0 :padding 0)
     (.item
      :display flex
      :margin 0.5em 0
@@ -32,9 +80,16 @@
       :min-width 250px
       :margin 0 0.5em 0 0)
      ("input[name=\"image[]\"]"
-      :flex-grow 1)))
-   (.buttons
-    :display flex))
+      :flex-grow 1))))
+  (.lists
+   :padding 0 1em 0 2em
+   (li
+    (a :text-decoration none
+       :color inherit)
+    ([rel=author] :float right)))
+  (.list.editable
+   (.items
+    :cursor pointer))
   (.list
    :display flex
    :justify-content space-between
@@ -42,7 +97,17 @@
     :margin 0 10px 0 0
     :text-transform capitalize
     :white-space nowrap
-    :cursor pointer)
+    :font-size 1.2em
+    :list-style none
+    :reset-counter item
+    (li :counter-increment item)
+    ("li:before"
+     :content (counter item)
+     :color gray
+     :padding 0 1em 0 0
+     :text-align right
+     :display inline-block
+     :width 10px))
    (.images
     :text-align right
     :display flex
