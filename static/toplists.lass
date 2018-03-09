@@ -12,6 +12,29 @@
    :font-weight bold
    :text-align center
    :padding 10px)
+  (.editor
+   (input
+    :border 1px solid gray
+    :padding 3px)
+   (header
+    (input
+     :width 100%
+     :box-sizing border-box
+     :font-size 2em
+     :margin .67em 0
+     :text-align center))
+   (main
+    :margin 10px 0 10px 0
+    (.item
+     :display flex
+     :margin 0.5em 0
+     ("input[name=\"text[]\"]"
+      :min-width 250px
+      :margin 0 0.5em 0 0)
+     ("input[name=\"image[]\"]"
+      :flex-grow 1)))
+   (.buttons
+    :display flex))
   (.list
    :display flex
    :justify-content space-between

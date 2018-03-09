@@ -1,11 +1,40 @@
+var ToplistEditor = function(editor){
+    var self = this;
+    this.items = editor.querySelector(".items");
+    console.log(self.items);
+    self.init();
+};
+
+ToplistEditor.prototype.insertItem = function(prot){
+    var self = this;
+    var item = prot.cloneNode(true);
+    var inputs = [].slice.call(item.querySelectorAll("input"));
+    inputs.forEach((input)=>input.value = "");
+    var first = inputs[0];
+    var listener = ()=>{
+        self.insertItem(item);
+        first.removeEventListener("focus", listener);
+    };
+    first.addEventListener("focus", listener, false);
+    self.items.appendChild(item);
+};
+
+ToplistEditor.prototype.init = function(){
+    var self = this;
+    var last = [].slice.call(self.items.querySelectorAll(".item")).pop();
+    self.insertItem(last);
+};
+
 var Toplist = function(list){
     var self = this;
+    self.list = list;
+    self.id = list.dataset.id;
     self.images = list.querySelector(".images");
     self.items = list.querySelector(".items");
     self.init();
 };
 
-Toplist.prototype.idIndex = (root, id)=>{
+Toplist.prototype.idIndex = function(root, id){
     var i = 0;
     for(var el of root.children){
         if(el.dataset.id == id) return i;
@@ -14,7 +43,7 @@ Toplist.prototype.idIndex = (root, id)=>{
     return -1;
 };
 
-Toplist.prototype.sortChildren = (container, score)=>{
+Toplist.prototype.sortChildren = function(container, score){
     var items = [...container.children];
     
     items.sort((a, b) => score(a) - score(b))
@@ -22,35 +51,36 @@ Toplist.prototype.sortChildren = (container, score)=>{
     return container;
 };
 
-Toplist.prototype.saveOrder = ()=>{
+Toplist.prototype.saveOrder = function(){
     var order = [];
-    for(var el of self.images.children){
+    for(var el of this.items.children){
         order.push(el.dataset.id);
     }
-    window.localStorage.setItem("order", JSON.stringify(order));
+    window.localStorage.setItem("order-"+this.id, JSON.stringify(order));
     return order;
 };
 
-Toplist.prototype.loadOrder = ()=>{
-    var order = JSON.parse(window.localStorage.getItem("order")||"[]");
+Toplist.prototype.loadOrder = function(){
+    var order = JSON.parse(window.localStorage.getItem("order-"+this.id)||"[]");
     this.sortChildren(this.images, (el)=> order.indexOf(el.dataset.id));
     this.sortChildren(this.items, (el)=> order.indexOf(el.dataset.id));
-    return images;
+    return this.images;
 };
 
-Toplist.prototype.imageForSorter = (sorter) =>{
-    return self.images.children[this.idIndex(images, sorter.dataset.id)];
+Toplist.prototype.imageForSorter = function(sorter){
+    return this.images.children[this.idIndex(this.images, sorter.dataset.id)];
 };
 
-Toplist.prototype.makeImageActive = (image) =>{
+Toplist.prototype.makeImageActive = function(image){
     if(!image.classList.contains("active")){
-        [].slice.call(self.images.children).forEach((img)=>img.classList.remove("active"));
+        [].slice.call(this.images.children).forEach((img)=>img.classList.remove("active"));
         image.classList.add("active");
     }
     return image;
-}
+};
 
-Toplist.prototype.makeDraggable = (root, onBegin, onMove, onFinish)=>{
+Toplist.prototype.makeDraggable = function(root, onBegin, onMove, onFinish){
+    var self = this;
     var drag = null;
     var onStart = null;
     var onDrag = null;
@@ -109,9 +139,9 @@ Toplist.prototype.makeDraggable = (root, onBegin, onMove, onFinish)=>{
     return root;
 };
 
-Toplist.prototype.init = ()=>{
+Toplist.prototype.init = function(){
     var self = this;
-    if(list.classList.contains("editable")){
+    if(self.list.classList.contains("editable")){
         self.loadOrder();
         self.makeDraggable(self.items, (el)=>{
             self.makeImageActive(self.imageForSorter(el));
@@ -156,11 +186,11 @@ Toplist.prototype.init = ()=>{
             }
         }, false);
     }
-}
+};
 
-document.addEventListener("DOMContentReady", ()=>{
+document.addEventListener("DOMContentLoaded", ()=>{
     var lists = document.querySelectorAll(".list");
-    for(var i=0; i<lists.length; i++){
-        new Toplist(lists[i]);
-    }
+    [].slice.call(lists).forEach((list)=>new Toplist(list));
+    var editors = document.querySelectorAll(".editor");
+    [].slice.call(editors).forEach((editor)=>new ToplistEditor(editor));
 }, false);

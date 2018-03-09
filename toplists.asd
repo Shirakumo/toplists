@@ -14,6 +14,7 @@
   :depends-on ((:interface :database)
                (:interface :user)
                (:interface :auth)
+               (:interface :profile)
                (:interface :cache)
                :r-data-model
                :r-clip))

@@ -40,6 +40,12 @@
   (apply #'user:add-default-permissions (config :permissions :default))
   (apply #'user:grant "anonymous" (config :permissions :anonymous)))
 
+(defun ensure-id (id-ish)
+  (etypecase id-ish
+    (dm:data-model (dm:id id-ish))
+    (db:id id-ish)
+    (string (db:ensure-id id-ish))))
+
 (defun ensure-list (list-ish)
   (etypecase list-ish
     (dm:data-model list-ish)
@@ -50,15 +56,23 @@
                  (error 'request-not-found :message (format NIL "No list with ID ~a was found." list-ish)))))))
 
 (defun list-items (list-ish)
-  (let ((id (etypecase list-ish
-              (dm:data-model (dm:id list-ish))
-              (db:id list-ish)
-              (string (db:ensure-id list-ish)))))
+  (let ((id (ensure-id list-ish)))
     (dm:get 'items (db:query (:= 'list id)))))
+
+(defun create-items (list items)
+  (unless items (error "At least one item is required."))
+  (let ((item (dm:hull 'items)))
+    (setf (dm:field item "list") (dm:id list))
+    (loop for i from 0
+          for props in items
+          do (setf (dm:field item "id") i)
+             (setf (dm:field item "text") (or (getf props :text)
+                                              (error "Item ~a is missing text." i)))
+             (setf (dm:field item "image") (getf props :image ""))
+             (dm:insert item))))
 
 (defun create-list (title items &key author)
   (let ((list (dm:hull 'lists))
-        (item (dm:hull 'items))
         (author (etypecase author
                   (string author)
                   (user:user (user:username author)))))
@@ -66,14 +80,7 @@
       (setf (dm:field list "author") author)
       (setf (dm:field list "title") title)
       (dm:insert list)
-      (setf (dm:field item "list") (dm:id list))
-      (loop for i from 0
-            for props in items
-            do (setf (dm:field item "id") i)
-               (setf (dm:field item "text") (or (getf props :text)
-                                                (error "Item ~i is missing text." i)))
-               (setf (dm:field item "image") (getf props :image ""))
-               (dm:insert item)))
+      (create-items list items))
     (trigger 'list-created list)
     list))
 
@@ -88,8 +95,19 @@
     list))
 
 (defun update-list (list &key title items)
-  ;; FIXME
-  )
+  (let ((list (ensure-list list)))
+    (db:with-transaction ()
+      (when title
+        (setf (dm:field list "title") title))
+      (when items
+        (db:remove 'items (db:query (:= 'list (dm:id list))))
+        (create-items list items))
+      (dm:save list))
+    list))
+
+(defun list-url (list)
+  (let ((id (ensure-id list)))
+    (uri-to-url (format NIL "toplists/~a" id) :representation :external)))
 
 (defun ensure-order (order-ish)
   (etypecase order-ish
@@ -128,6 +146,28 @@
       (dm:delete order))
     (trigger 'order-deleted order)
     order))
+
+(defun order-url (order)
+  (let ((order (ensure-order order)))
+    (uri-to-url (format NIL "toplists/~a/~a" (dm:field order "list") (dm:id order))
+                :representation :external)))
+
+(defun split (string by)
+  (let ((parts ())
+        (out (make-string-output-stream)))
+    (flet ((out ()
+             (let ((string (get-output-stream-string out)))
+               (when (string/= "" string) (push string parts)))))
+      (loop for char across string
+            do (if (char= char by)
+                   (out)
+                   (write-char char out))
+            finally (out))
+      (nreverse parts))))
+
+(defun sort-by-order (items order)
+  (loop for id in (split (dm:field order "order") #\,)
+        collect (find (parse-integer id) items :key (lambda (item) (dm:field item "id")))))
 
 (defun permitted-p (action &optional list (user (or (auth:current) (user:get "anonymous"))))
   (if (listp action)

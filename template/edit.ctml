@@ -2,35 +2,39 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title><c:splice lquery='(text (or (clip event :title) "New List"))'/> - Top List</title>
+    <title><c:splice lquery='(text (or (clip list :title) "New List"))'/> - Top List</title>
     <link rel="stylesheet" type="text/css" href="../static/toplists.css" @href="/static/toplists/toplists.css">
   </head>
   <body>
-    <form>
+    <form class="editor">
+      <input type="hidden" name="browser" value="true" />
       <header>
-        <input type="text" name="title" placeholder="Title" maxlength="32" required
-               lquery="(val (clip event :title))" />
+        <input type="text" name="title" placeholder="List Title" maxlength="32" required
+               lquery="(val (clip list :title))" />
       </header>
-      <main iterate='(or items (list :text "" :image ""))'>
+      <noscript>
+        Sorry, JavaScript is required for this to work properly.
+      </noscript>
+      <main class="items" iterate='items'>
         <div class="item">
-          <input type="text" name="text[]" placeholder="Text" maxlength="32"
+          <input type="text" name="text[]" placeholder="Item text" maxlength="32"
                  lquery="(val text)" />
           <input type="url" name="image[]" placeholder="Image URL" maxlength="2048"
                  lquery="(val image)" />
         </div>
       </main>
-      <div id="buttons">
-        <c:if test="(dm:hull-p *)">
+      <div class="buttons">
+        <c:if test="(dm:hull-p list)">
           <c:then>
-            <input type="submit" @formaction="/api/toplists/create" value="Post" />
+            <input type="submit" @formaction="/api/toplists/list/create" value="Post" />
           </c:then>
           <c:else>
-            <input type="hidden" name="id" lquery="(val _id)" />
-            <c:when test="(toplists::permitted-p :edit *)">
-              <input type="submit" @formaction="/api/toplists/edit" value="Save" />
+            <input type="hidden" name="id" lquery="(val (clip list :_id))" />
+            <c:when test="(toplists::permitted-p :edit list)">
+              <input type="submit" @formaction="/api/toplists/list/edit" value="Save" />
             </c:when>
-            <c:when test="(toplists::permitted-p :delete *)">
-              <input type="submit" @formaction="/api/toplists/delete" value="Delete" />
+            <c:when test="(toplists::permitted-p :delete list)">
+              <input type="submit" @formaction="/api/toplists/list/delete" value="Delete" />
             </c:when>
           </c:else>
         </c:if>

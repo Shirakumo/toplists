@@ -1,22 +1,29 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="utf-8" />
-    <title><c:splice lquery="(text title)"/> - Top List</title>
-    <link rel="stylesheet" type="text/css" href="../static/toplists.css" @href="/static/toplists/toplists.css">
-  </head>
-  <body>
-    <header>
-      <h1 lquery="(text title)">Top List</h1>
-    </header>
-    <c:when test="editable">
-      <noscript>
-        Sorry, JavaScript is required for this to work properly.
-      </noscript>
-    </c:when>
-    <main>
-      <c:import file='(template-file "list.ctml" :toplists)' />
-    </main>
-    <script type="text/javascript" src="../static/toplists.js" @src="/static/toplists/toplists.js"></script>
-  </body>
+  <c:using value="list">
+    <head>
+      <meta charset="utf-8" />
+      <title><c:splice lquery="(text title)"/> - Top List</title>
+      <link rel="stylesheet" type="text/css" href="../static/toplists.css" @href="/static/toplists/toplists.css">
+    </head>
+    <body>
+      <header>
+        <h1 lquery="(text title)">Top List</h1>
+        <nav>
+          <a href="#" @href="toplists/new">New List</a>
+          <a href="#" @href="toplists/{0}/order _id">Order this List</a>
+          <a href="#" @href="toplists/{0}/edit _id">Edit this List</a>
+        </nav>
+      </header>
+      <c:when test="editable">
+        <noscript>
+          Sorry, JavaScript is required for this to work properly.
+        </noscript>
+      </c:when>
+      <main>
+        <c:import file='(template-file "list.ctml" :toplists)' />
+      </main>
+      <script type="text/javascript" src="../static/toplists.js" @src="/static/toplists/toplists.js"></script>
+    </body>
+  </c:using>
 </html>

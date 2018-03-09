@@ -1,4 +1,4 @@
-<article class="list" lquery="(add-class (when editable :editable))">
+<article class="list" lquery='(add-class (when editable "editable")) (data :id id)'>
   <ol class="items" iterate="items">
     <li data-id="1" lquery="(text text) (data :id id)">Nier</li>
     <li data-id="2">Ghost Trick</li>
