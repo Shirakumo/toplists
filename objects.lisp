@@ -22,7 +22,8 @@
                       (text (:varchar 32))
                       (image (:varchar 2048)))
              :indices '(author list))
-  (db:create 'orders '((author (:varchar 32))
+  (db:create 'orders '((list :id)
+                       (author (:varchar 32))
                        (order :text))
              :indices '(author)))
 
