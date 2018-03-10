@@ -8,7 +8,7 @@ ToplistEditor.prototype.fillItem = function(item, parts){
     if(typeof parts == "string") parts = parts.split('\t');
     var inputs = item.querySelectorAll("input");
     for(var i=0; i<inputs.length && i<parts.length; i++){
-        inputs[i].value = parts[i];
+        inputs[i].value = parts[i].slice(0, Math.min(parts[i].length, inputs[i].getAttribute("maxlength") || 4096));
     }
     return item;
 };
