@@ -27,7 +27,7 @@
         <main>
           <ul class="items" iterate="items">
             <li class="item">
-              <input type="text" name="text[]" placeholder="Item text" maxlength="32"
+              <input type="text" name="text[]" placeholder="Item text" maxlength="64"
                      lquery="(val text)" />
               <input type="url" name="image[]" placeholder="Image URL" maxlength="2048"
                      lquery="(val image)" />

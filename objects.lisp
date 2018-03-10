@@ -19,7 +19,7 @@
              :indices '(author))
   (db:create 'items '((list :id)
                       (id :integer)
-                      (text (:varchar 32))
+                      (text (:varchar 64))
                       (image (:varchar 2048)))
              :indices '(author list))
   (db:create 'orders '((list :id)
