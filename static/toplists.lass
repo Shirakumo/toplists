@@ -86,8 +86,7 @@
      :padding 0
      :border 1px solid (hex 333333)
      :text-align center
-     :background inherit
-     :color inherit))
+     :background inherit))
    (main
     (ul :margin 0 :padding 0)
     (.item
