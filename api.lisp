@@ -59,7 +59,7 @@
 
 (define-api toplists/order/create (list item[]) ()
   (let ((list (ensure-list list)))
-    (check-permission 'create list)
+    (check-permission 'order list)
     (api-order-output (create-order list item[] :author (auth:current)))))
 
 (define-api toplists/order/edit (id item[]) ()

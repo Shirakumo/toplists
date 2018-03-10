@@ -1,6 +1,7 @@
 (html
  :font-family sans-serif
  :background (hex 000000)
+ :overflow-y scroll
  (body
   :margin 0
   (h1 :text-align center)
@@ -71,6 +72,7 @@
     :padding 0.2em 0.5em)
    ("input[type=submit]:hover")
    (.buttons
+    :margin 10px 0 0 0
     ("[value=Delete]"
      :float right
      :background (hex 880000))))
@@ -121,7 +123,6 @@
    :justify-content space-between
    (.items
     :margin 0 10px 0 0
-    :text-transform capitalize
     :white-space nowrap
     :font-size 1.2em
     :list-style none

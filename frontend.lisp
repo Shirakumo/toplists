@@ -41,7 +41,7 @@
 (define-page new-order ("toplists/^([^/]+)/order$" 10) (:uri-groups (list) :clip "order.ctml")
   (let ((list (ensure-list list))
         (order (dm:hull 'orders)))
-    (check-permission 'create list)
+    (check-permission 'order list)
     (setf (dm:field list "items") (list-items list))
     (setf (dm:field list "editable") T)
     (setf (dm:field order "author") (user:username (or (auth:current) (user:get "anonymous"))))

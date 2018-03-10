@@ -13,7 +13,7 @@
         <input type="hidden" name="list" lquery="(val _id)" />
         <header>
           <h1><a href="#" @href="toplists/{0} _id" lquery="(text title)">Top List</a></h1>
-          order
+          ordered
           <a rel="author" href="#" @href="<profile page {0}> (clip (** :order) :author)"
              lquery="(text (clip (** :order) :author))">Author</a>
           <c:import file='(template-file "nav.ctml" :toplists)' />
@@ -30,16 +30,16 @@
         <main>
           <c:import file='(template-file "list.ctml" :toplists)' />
           <div class="buttons">
-            <c:if test="(dm:hull-p (** :order))a">
+            <c:if test="(dm:hull-p (** :order))">
               <c:then>
                 <input type="submit" @formaction="/api/toplists/order/create" value="Create" />
               </c:then>
               <c:else>
                 <input type="hidden" name="id" lquery="(val (clip (** :order) :_id))" />
-                <c:when test="(toplists::permitted-p :edit order)">
+                <c:when test="(toplists::permitted-p :edit (** :order))">
                   <input type="submit" @formaction="/api/toplists/order/edit" value="Save" />
                 </c:when>
-                <c:when test="(toplists::permitted-p :delete order)">
+                <c:when test="(toplists::permitted-p :delete (** :order))">
                   <input type="submit" @formaction="/api/toplists/order/delete" value="Delete" />
                 </c:when>
               </c:else>

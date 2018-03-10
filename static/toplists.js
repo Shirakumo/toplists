@@ -1,8 +1,28 @@
 var ToplistEditor = function(editor){
     var self = this;
     this.items = editor.querySelector(".items");
-    console.log(self.items);
     self.init();
+};
+
+ToplistEditor.prototype.fillItem = function(item, parts){
+    if(typeof parts == "string") parts = parts.split('\t');
+    var inputs = item.querySelectorAll("input");
+    for(var i=0; i<inputs.length && i<parts.length; i++){
+        inputs[i].value = parts[i];
+    }
+    return item;
+};
+
+ToplistEditor.prototype.pasteContent = function(start, content){
+    var self = this;
+    if(!content) return;
+    var lines = content.split('\n');
+    self.fillItem(start, lines[0]);
+    for(var i=1; i<lines.length; i++){
+        start = self.insertItem(start);
+        self.fillItem(start, lines[i]);
+    }
+    return start;
 };
 
 ToplistEditor.prototype.insertItem = function(prot){
@@ -15,8 +35,18 @@ ToplistEditor.prototype.insertItem = function(prot){
         self.insertItem(item);
         first.removeEventListener("focus", listener);
     };
-    first.addEventListener("focus", listener, false);
-    self.items.appendChild(item);
+    prot.querySelector("input").addEventListener("paste", (ev)=>{
+        ev.preventDefault();
+        self.pasteContent(prot, ev.clipboardData.getData("text"));
+    });
+    
+    if(prot.nextSibling){
+        prot.parentNode.insertBefore(item, prot.nextSibling);
+    }else{
+        first.addEventListener("focus", listener, false);
+        prot.parentNode.appendChild(item);
+    }
+    return item;
 };
 
 ToplistEditor.prototype.init = function(){
@@ -28,7 +58,7 @@ ToplistEditor.prototype.init = function(){
 var Toplist = function(list){
     var self = this;
     self.list = list;
-    self.id = list.dataset.id;
+    self.id = list.dataset.id+"/"+list.dataset.order;
     self.images = list.querySelector(".images");
     self.items = list.querySelector(".items");
     self.init();

@@ -7,6 +7,12 @@
 (asdf:defsystem #:toplists
   :defsystem-depends-on (:radiance)
   :class "radiance:virtual-module"
+  :author "Nicolas Hafner <shinmera@tymoon.eu>"
+  :maintainer "Nicolas Hafner <shinmera@tymoon.eu>"
+  :license "Artistic"
+  :version "1.0.1"
+  :description "A top list ranking application for Radiance."
+  :homepage "https://github.com/Shirakumo/toplists"
   :components ((:file "module")
                (:file "objects")
                (:file "frontend")

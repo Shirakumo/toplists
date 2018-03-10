@@ -30,6 +30,7 @@
   (defaulted-config (list
                      (perm toplists create)
                      (perm toplists view)
+                     (perm toplists order)
                      (perm toplists edit own)
                      (perm toplists delete own))
                     :permissions :default)
