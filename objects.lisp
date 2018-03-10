@@ -59,8 +59,12 @@
   (let ((id (ensure-id list-ish)))
     (dm:get 'items (db:query (:= 'list id)))))
 
+(defun list-orders (list-ish)
+  (let ((id (ensure-id list-ish)))
+    (dm:get 'orders (db:query (:= 'list id)))))
+
 (defun create-items (list items)
-  (unless items (error "At least one item is required."))
+  (unless items (error 'api-error :message "At least one item is required."))
   (let ((item (dm:hull 'items)))
     (setf (dm:field item "list") (dm:id list))
     (loop for i from 0
@@ -112,11 +116,11 @@
 (defun ensure-order (order-ish)
   (etypecase order-ish
     (dm:data-model order-ish)
-    (db:id (or (dm:get-one 'orders (db:query (:= '_id list-ish)))
-               (error 'request-not-found :message (format NIL "No order with ID ~a was found." list-ish))))
-    (string (ensure-list
-             (or (ignore-errors (db:ensure-id list-ish))
-                 (error 'request-not-found :message (format NIL "No order with ID ~a was found." list-ish)))))))
+    (db:id (or (dm:get-one 'orders (db:query (:= '_id order-ish)))
+               (error 'request-not-found :message (format NIL "No order with ID ~a was found." order-ish))))
+    (string (ensure-order
+             (or (ignore-errors (db:ensure-id order-ish))
+                 (error 'request-not-found :message (format NIL "No order with ID ~a was found." order-ish)))))))
 
 (defun create-order (list items &key author)
   (let ((list (ensure-list list))

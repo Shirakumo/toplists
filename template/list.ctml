@@ -1,6 +1,8 @@
 <article class="list" lquery='(add-class (when editable "editable")) (data :id id :order order)'>
   <ol class="items" iterate="items">
-    <li data-id="1" lquery="(text text) (data :id id)">ITEM</li>
+    <li data-id="1" lquery="(text text) (data :id id)">
+      <input type="hidden" name="item[]" lquery="(val id)" />
+      ITEM</li>
   </ol>
   <div class="images" iterate="items">
     <img data-id="1" src="#"

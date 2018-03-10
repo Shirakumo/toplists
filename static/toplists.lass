@@ -4,38 +4,48 @@
  (body
   :margin 0
   (h1 :text-align center)
-  (noscript
+  ((:or noscript .infobox)
    :display block
-   :margin 10px 0 10px 0
-   :background (hex FF0000)
+   :background (hex BB0000)
    :color (hex FFFFFF)
    :font-weight bold
    :text-align center
    :padding 10px)
+  (.message
+   :background (hex 00BB00))
+  ("[rel=author]:before"
+    :content " by ")
   (header
+   :font-size 1.5em
    :text-align center
-   :margin 3em 0 0 0
-   :color (hex FFFFFF)
+   :margin 0
+   :color (hex AAAAAA)
    :background (hex 151515)
    :border-bottom 3px solid (hex 0088EE)
    ((:or h1 input)
     :font-size 2em
     :margin .1em 0
-    :display inline-block)
+    :display inline-block
+    :color (hex FFFFFF))
    (a
     :text-decoration none
     :color inherit
     :display inline-block
     :cursor pointer)
+   ("a:hover"
+    :color (hex 0088EE))
    ([rel=author]
-    :font-size 1.5em
-    :color (hex AAAAAA))
+    :color (hex FFFFFF))
    ("[rel=author]:before"
-    :content " by ")
+    :color (hex AAAAAA))
    (nav
+    :color (hex FFFFFF)
+    :font-size 0.65em
     :display block
     (a :padding 0.2em 0.5em)
-    ("a:hover" :background (hex 0088EE))))
+    ("a:hover"
+     :background (hex 0088EE)
+     :color inherit)))
   (main
    :margin 0 auto 0 auto
    :max-width 800px
@@ -49,6 +59,8 @@
     :border 1px solid (hex AAAAAA)
     :padding 3px
     :cursor pointer)
+   (input[type=text]
+    :cursor auto)
    (input[type=submit]
     :background (hex 0088EE)
     :color (hex FFFFFF)
@@ -59,7 +71,9 @@
     :padding 0.2em 0.5em)
    ("input[type=submit]:hover")
    (.buttons
-     :display flex))
+    ("[value=Delete]"
+     :float right
+     :background (hex 880000))))
   (.editor
    (form :width 100%)
    (header
@@ -83,10 +97,22 @@
       :flex-grow 1))))
   (.lists
    :padding 0 1em 0 2em
+   :font-size 1.2em
    (li
-    (a :text-decoration none
-       :color inherit)
-    ([rel=author] :float right)))
+    :display flex
+    :border-bottom 1px solid transparent
+    (a
+     :flex-grow 1
+     :text-decoration none
+     :color inherit
+     :display inline-block
+     :min-width 100px)
+    ([rel=author]
+     :flex-grow 0
+     :float right
+     :text-align right))
+   ("li:hover"
+    :border-color (hex 0088EE)))
   (.list.editable
    (.items
     :cursor pointer))
@@ -100,7 +126,9 @@
     :font-size 1.2em
     :list-style none
     :reset-counter item
-    (li :counter-increment item)
+    (li
+     :min-width 200px
+     :counter-increment item)
     ("li:before"
      :content (counter item)
      :color gray

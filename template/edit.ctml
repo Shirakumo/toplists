@@ -11,13 +11,19 @@
       <form class="editor">
         <input type="hidden" name="browser" value="true" />
         <header>
-          <input type="text" name="title" placeholder="List Title" maxlength="32" required
+          <input type="text" name="title" placeholder="List Title" maxlength="32" required autofocus
                  lquery="(val title)" />
           <c:import file='(template-file "nav.ctml" :toplists)' />
         </header>
         <noscript>
           Sorry, JavaScript is required for this to work properly.
         </noscript>
+        <c:when test="(** :error)">
+          <div class="infobox error" lquery="(text (** :error))">ERROR</div>
+        </c:when>
+        <c:when test="(** :message)">
+          <div class="infobox message" lquery="(text (** :message))">MESSAGE</div>
+        </c:when>
         <main>
           <ul class="items" iterate="items">
             <li class="item">

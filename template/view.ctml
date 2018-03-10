@@ -10,12 +10,28 @@
     <body>
       <header>
         <h1><a href="#" @href="toplists/{0} _id" lquery="(text title)">Top List</a></h1>
+        list
         <a rel="author" href="#" @href="<profile page {0}> author"
            lquery="(text author)">Author</a>
         <c:import file='(template-file "nav.ctml" :toplists)' />
       </header>
+      <c:when test="(** :error)">
+        <div class="infobox error" lquery="(text (** :error))">ERROR</div>
+      </c:when>
+      <c:when test="(** :message)">
+        <div class="infobox message" lquery="(text (** :message))">MESSAGE</div>
+      </c:when>
       <main>
         <c:import file='(template-file "list.ctml" :toplists)' />
+        <div>
+          <h2>Orders</h2>
+          <ul class="lists" iterate="orders">
+            <li>
+              <a href="#" @href="toplists/{0}/{1} list _id" lquery="(text _id)">LIST</a>
+              <a href="#" rel="author" @href="<profile page {0}> author" lquery="(text author)">AUTHOR</a>
+            </li>
+          </ul>
+        </div>
       </main>
       <script type="text/javascript" src="../static/toplists.js" @src="/static/toplists/toplists.js"></script>
     </body>
