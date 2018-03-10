@@ -33,6 +33,7 @@
           </ul>
         </div>
       </main>
+      <c:import file='(template-file "footer.ctml" :toplists)' />
       <script type="text/javascript" src="../static/toplists.js" @src="/static/toplists/toplists.js"></script>
     </body>
   </c:using>

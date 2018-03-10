@@ -77,6 +77,14 @@
     ("[value=Delete]"
      :float right
      :background (hex 880000))))
+  (footer
+   :margin 1em 0 0 0
+   :text-align center
+   :color (hex 333333)
+   (a :color (hex 555555)
+      :text-decoration none
+      :font-weight bold)
+   ("a:hover" :color (hex 0088EE)))
   (.editor
    (form :width 100%)
    (header
