@@ -33,6 +33,9 @@
                      lquery="(val image)" />
             </li>
           </ul>
+          <span>
+            Tip: You can paste a list to automatically fill it in. Items and images should be tab-separated.
+          </span>
           <div class="buttons">
             <c:if test="(dm:hull-p *)">
               <c:then>

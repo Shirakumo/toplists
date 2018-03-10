@@ -55,7 +55,8 @@
    :background (hex EEEEEE)
    :display flex
    :flex-direction column
-   :justify-content space-between
+   ("> *:first-child"
+   :flex-grow 1)
    (input
     :border 1px solid (hex AAAAAA)
     :padding 3px
