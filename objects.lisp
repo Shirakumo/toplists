@@ -42,6 +42,12 @@
   (apply #'user:add-default-permissions (config :permissions :default))
   (apply #'user:grant "anonymous" (config :permissions :anonymous)))
 
+(define-version-migration toplists (NIL 1.0.0)
+  (let ((anonymous (user:get "anonymous")))
+    (dolist (user (user:list))
+      (unless (eql user anonymous)
+        (apply #'user:grant user (config :permissions :default))))))
+
 (defun ensure-id (id-ish)
   (etypecase id-ish
     (dm:data-model (dm:id id-ish))
