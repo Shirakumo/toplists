@@ -12,7 +12,9 @@
   :license "Artistic"
   :version "1.0.1"
   :description "A top list ranking application for Radiance."
-  :homepage "https://github.com/Shirakumo/toplists"
+  :homepage "https://Shirakumo.github.io/toplists/"
+  :bug-tracker "https://github.com/Shirakumo/toplists/issues"
+  :source-control (:git "https://github.com/Shirakumo/toplists.git")
   :components ((:file "module")
                (:file "objects")
                (:file "frontend")
