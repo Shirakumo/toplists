@@ -91,9 +91,11 @@ Toplist.prototype.saveOrder = function(){
 };
 
 Toplist.prototype.loadOrder = function(){
-    var order = JSON.parse(window.localStorage.getItem("order-"+this.id)||"[]");
-    this.sortChildren(this.images, (el)=> order.indexOf(el.dataset.id));
-    this.sortChildren(this.items, (el)=> order.indexOf(el.dataset.id));
+    var order = JSON.parse(window.localStorage.getItem("order-"+this.id)||"null");
+    if(order != null){
+        this.sortChildren(this.images, (el)=> order.indexOf(el.dataset.id));
+        this.sortChildren(this.items, (el)=> order.indexOf(el.dataset.id));
+    }
     return this.images;
 };
 
