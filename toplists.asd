@@ -9,7 +9,7 @@
   :class "radiance:virtual-module"
   :author "Nicolas Hafner <shinmera@tymoon.eu>"
   :maintainer "Nicolas Hafner <shinmera@tymoon.eu>"
-  :license "Artistic"
+  :license "zlib"
   :version "1.0.1"
   :description "A top list ranking application for Radiance."
   :homepage "https://Shirakumo.github.io/toplists/"
