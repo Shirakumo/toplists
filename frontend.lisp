@@ -1,9 +1,3 @@
-#|
- This file is a part of Toplists
- (c) 2018 Shirakumo http://tymoon.eu (shinmera@tymoon.eu)
- Author: Nicolas Hafner <shinmera@tymoon.eu>
-|#
-
 (in-package #:org.shirakumo.radiance.toplists)
 
 (define-page all ("toplists/^$" 10) (:clip "all.ctml")
